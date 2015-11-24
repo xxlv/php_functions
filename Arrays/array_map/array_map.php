@@ -8,11 +8,11 @@ function x_array_map($callback,$arr){
 	if (!is_array($arr)) 		 die('should give array');
 	
 	$new_array=[];
-	
+
 	foreach($arr as $k =>$v){
 		$new_array[$k]=$callback($v);
 	}
-
+	
 	return $new_array;
 }
 

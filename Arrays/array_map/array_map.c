@@ -3,49 +3,35 @@
 
 #define SUCCESS 0
 #define FAILED -1
+#define param_type int
 
-int func(int);
-void * x_array_map(void *,char *,int);
 
-int func(int a){
-	return 0;
+param_type *x_array_map(param_type (*f)(param_type) ,param_type * ,int);
+
+int add(int a){
+	return a;
+}
+
+int main(){
+	int a[3]={1,2,3};
+	
+	param_type* result=x_array_map(add,a,3);
+	for (int i = 0; i < 3; ++i)
+	{
+		printf("%d\n", result[i]);
+	}
+
+	return SUCCESS;
 }
 
 
-int main(void){
+param_type * x_array_map (param_type (*f)(param_type) ,param_type* array ,int len){
 
-	printf("START\n");
-	char arr [3]={1,2,3};
-	int len=sizeof(arr)/sizeof(arr[0]);
-	int * res=(int *)x_array_map(&func,arr,len);
-	printf("res address is : %p\n",res);
+	param_type * res=(param_type *)malloc(sizeof(param_type)* len);
 
 	for(int i=0;i<len;i++){
-		printf("%d\n", *res);
-		res++;
+		res[i]=f(array[i]);
 	}
-
-	printf("END\n");
-    return SUCCESS;
-}
-
-
-// 对每一个数组的value应用function
-void * x_array_map(void *func,char * arr,int len){
-	
-	int (*funcP)();
-	funcP=func;
-	//foreach
-	int * new_arr=malloc(sizeof(int)*len);
-	
-	for(int i=0;i<len;i++){
-		*new_arr=(*funcP)(arr[i]);
-		 new_arr++;
-	}
-	printf("new_arr address is : %p\n",new_arr);
-	return new_arr;
-	// (*funcP)();	
-
-
+	return res;
 }
 
